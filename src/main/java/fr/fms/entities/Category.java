@@ -1,9 +1,12 @@
 package fr.fms.entities;
 
+import java.util.Collection;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Category {
@@ -11,8 +14,17 @@ public class Category {
 private Long id;
 private String name;
 
-public Category(String name) {this.name=name;}
+@OneToMany(mappedBy = "category")
+private Collection<Article> articles;
 
+public Category(String name){this.name=name;}
+
+public Category() {}
+
+@Override
+public String toString() {
+	return "Category [id=" + id + ", name=" + name + ", articles=" + articles + "]";
+}
 public Long getId() {return id;}
 
 public void setId(Long id) {this.id=id;}

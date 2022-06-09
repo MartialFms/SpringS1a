@@ -7,7 +7,7 @@ import fr.fms.entities.Article;
 import fr.fms.entities.Category;
 
 
-	public interface CategoryRepository extends JpaRepository<Article,Long>{
+	public interface CategoryRepository extends JpaRepository<Category,Long>{
 
 		public List<Category> findByName(String name);
 

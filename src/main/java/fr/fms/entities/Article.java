@@ -6,21 +6,40 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Article implements Serializable {
-	private static final long serialVersionId = 1l;
+	private static final long serialVersionId = 1L;
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String description;
 	private String brand;
 	private double price;
+	
+	@ManyToOne
+	private Category category;
+
+	@Override
+	public String toString() {
+		return "Article [id=" + id + ", description=" + description + ", brand=" + brand + ", price=" + price
+				+ ", category=" + category + "]";
+	}
 
 	public Article(String description, String brand, double price) {
 		this.description=description;
 		this.brand=brand;
 		this.price=price;
 		}
+	
+	public Article(String description, String brand, double price, Category category) {
+		this.description=description;
+		this.brand=brand;
+		this.price=price;
+		this.category=category;
+		}
+	
+	public Article() {		}
 
 	public Long getId() {return id;}
 
