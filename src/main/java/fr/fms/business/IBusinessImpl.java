@@ -47,9 +47,11 @@ public class IBusinessImpl implements IBusiness{
 	}
 	
 	@Override
-	public List<Article> showArticleWithStream(int targetId) {
+	public Article showArticleWithStream(int targetId) {
+		Article article = articleRepository.findAll().stream().filter(a -> a.getId().equals(targetId)).findFirst().get();
+		
 		  // List<>oArticle.stream().filter(Customer::hasOverHundredPoints).collect(Collectors.toList());
-		return null;																							// a changer
+		return article;																							// a changer
 		}
 	@Override
 	public List<Article> showArticleWithDAndM(String brand, String description) {
@@ -58,12 +60,13 @@ public class IBusinessImpl implements IBusiness{
 		}
 
 	@Override
-	public void addArticle(String description, String brand, double price, Category category) { 	
+	public void addArticle(String description, String brand, double price, int categoryId) { 	
+		Category category =categoryRepository.findAll().stream().filter(c -> c.getId().equals(categoryId)).findFirst().get();
 		articleRepository.save(new Article(description, brand, price, category));
 	}
 	
 	@Override
-	public void updateArticle(String brand, String description, double price, Category category) {
+	public void updateArticle(int id, String brand, String description, double price, int categoryId) {
 																												// a changer
 	}
 
@@ -82,6 +85,11 @@ public class IBusinessImpl implements IBusiness{
 	@Override
 	public List<Category> showCategory() {
 		return  categoryRepository.findAll();
+	}
+	
+	@Override
+	public List<Article> show5CategoriesByPage() {
+		return null;																							// a changer
 	}
 	
 	@Override

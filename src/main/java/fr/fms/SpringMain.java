@@ -97,7 +97,7 @@ public class SpringMain implements CommandLineRunner {
 	 * Menu Exercice 
 	 * =============================================================================
 	 */
-	public static void exerciseMenu() {
+	public void exerciseMenu() {
 		boolean menu = true;
 
 		System.out.println(
@@ -106,11 +106,11 @@ public class SpringMain implements CommandLineRunner {
 		int menuChoice = 0;
 		while (menu == true) {
 			System.out.println("\nQue souhaitez vous faire ? ");
-			System.out.println(" 1/ Afficher un article (methode 1)\n 2/ Afficher un article (methode 2)\n "
-					+ "3/ Afficher un article avec une description + une marque\n 4/ Supprimer un article par son id\n "
-					+ "5/ Mettre un article à jour avec son id\n 6/ Organiser les noms de catégories par ordre croissant\n "
-					+ "7/ Afficher la liste complete des articles par ordre décroissant\n 8/ Afficher la liste complete des articles\n "
-					+ "9/ Afficher la liste complete des catégories \n 0/ Sortir");
+			System.out.println(" 1/ Afficher un article (methode 1)\n "
+					+ "2/ Afficher un article avec une description + une marque\n 3/ Supprimer un article par son id\n "
+					+ "4/ Mettre un article à jour avec son id\n 5/ Organiser les noms de catégories par ordre croissant\n "
+					+ "6/ Afficher la liste complete des articles par ordre décroissant\n 7/ Afficher la liste complete des articles\n "
+					+ "8/ Afficher la liste complete des catégories \n 0/ Sortir");
 			while (!scan.hasNextInt())
 				scan.next();
 			menuChoice = scan.nextInt();
@@ -119,27 +119,24 @@ public class SpringMain implements CommandLineRunner {
 				showOneArticleWithMethode();
 				break;
 			case 2:
-				showArticleWithQuery();
-				break;
-			case 3:
 				showArticleWithDAndM();
 				break;
-			case 4:
+			case 3:
 				deleteArticle();
 				break;
-			case 5:
+			case 4:
 				updateArticle();
 				break;
+			case 5:
+				business.categoryOrderAsc();
+				break;
 			case 6:
-				orderAsc();
+				business.categoryOrderDesc();
 				break;
 			case 7:
-				orderDesc();
-				break;
+				business.showArticles();
 			case 8:
-				showArticles();
-			case 9:
-				showCategory();
+				business.showCategory();
 				break;
 			case 0:
 				menu = false;
@@ -156,7 +153,7 @@ public class SpringMain implements CommandLineRunner {
 	 * =============================================================================
 	 */
 
-	public static void tpShopMenu() {
+	public void tpShopMenu() {
 
 		System.out.println(
 				"-------------------------------------------------- Menu -----------------------------------------");
@@ -173,11 +170,11 @@ public class SpringMain implements CommandLineRunner {
 		menuChoice = scan.nextInt();
 		switch (menuChoice) {
 		case 1:
-			showArticles();
-			showCategory();
+			business.showArticles();
+			business.showCategory();
 			break;
 		case 2:
-			show5ArticlesByPage();
+			business.show5ArticlesByPage();
 			break;
 		case 3:
 			addArticle();
@@ -189,7 +186,7 @@ public class SpringMain implements CommandLineRunner {
 			deleteArticle();
 			break;
 		case 6:
-			show5CategoryByPage();
+			business.show5CategoriesByPage();
 			break;
 		case 7:
 			addCategory();
@@ -241,15 +238,15 @@ public class SpringMain implements CommandLineRunner {
 	}
 	
 	private void showArticleWithDAndM() {
-	Scanner scanner = new Scanner(System.in);
-	System.out.println("\nSaisissez la marque : ");
-	String brand = scanner.nextLine();
-	System.out.println("\nSaisissez la description : ");
-	String description = scanner.nextLine();
-	//
-	// trouver article methode 2
-	business.showArticleWithDAndM(brand, description);
-}
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("\nSaisissez la description : ");
+		String description = scanner.nextLine();
+		scanner.close();
+		System.out.println("\nSaisissez la marque : ");
+		String brand = scanner.nextLine();
+		scanner.close();
+		business.showArticleWithDAndM(brand, description);
+	}
 
 	
 	private void updateArticle() {
@@ -364,7 +361,7 @@ public class SpringMain implements CommandLineRunner {
 	 * =============================================================================
 	 */
 	
-	buildBdd(){
+	private void buildBdd(){
 	Category smartphone = categoryRepository.save(new Category("Smartphone"));
 	Category tablet = categoryRepository.save(new Category("Tablet"));
 	Category pc = categoryRepository.save(new Category("PC"));
