@@ -19,135 +19,96 @@ public class IBusinessImpl implements IBusiness{
 
 	@Autowired
 	private  ArticleRepository articleRepository;
+
+	/*
+	 * =============================================================================
+	 * Article 
+	 * =============================================================================
+	 */
 	
-	public List<Article> readArticles() {	
+	@Override
+	public List<Article> showArticles() {
 		return  articleRepository.findAll();
 	}
-
-	public List<Category> readCategories() {	
-		return categoryRepository.findAll();
+	
+	@Override
+	public List<Article> show5ArticlesByPage() {
+		return null;																							// a changer
 	}
 	
-	public void addArticles(String description, String brand, double price, Category category) { 	
+	@Override
+	public List<Article> showArticleWithMethode(int targetId) {
+		return articleRepository.findById(targetId);		
+	}
+
+	@Override
+	public List<Article> showArticleWithQuery(int targetId) {
+		return articleRepository.searchArticle(targetId);
+	}
+	
+	@Override
+	public List<Article> showArticleWithStream(int targetId) {
+		  // List<>oArticle.stream().filter(Customer::hasOverHundredPoints).collect(Collectors.toList());
+		return null;																							// a changer
+		}
+	@Override
+	public List<Article> showArticleWithDAndM(String brand, String description) {
+// for (Article article : articleRepository.findByBrandAndDescription(brand, description)) {
+		return null;																							// a changer
+		}
+
+	@Override
+	public void addArticle(String description, String brand, double price, Category category) { 	
 		articleRepository.save(new Article(description, brand, price, category));
 	}
-
 	
-	
-	public void showArticleWithMethode(int targetId) {
-		// trouver article methode 1
-		List<Article> article = articleRepository.findById(targetId);
-			System.out.println(article);
-		
+	@Override
+	public void updateArticle(String brand, String description, double price, Category category) {
+																												// a changer
 	}
 
-	public void showArticleWithQuery(int targetId) {
-		// trouver article methode 2
-		for (Article article : articleRepository.searchArticle(targetId)) {
-			System.out.println(article);
-		}
-	}
-	
-	public void showArticleWithStream(int targetId) {
-		// trouver article methode 2
-		  List<>oArticle.stream().filter(Customer::hasOverHundredPoints).collect(Collectors.toList());
-		}
-	}
-
-	public void showArticleWithDAndM(String brand, String description) {
-//
-		for (Article article : articleRepository.findByBrandAndDescription(brand, description)) {
-			System.out.println(article);
-		}
-	}
-
-	public void updateArticle(String brand, String description, double price, int categoryId) {
-		try {
-			List<Category> categories = categoryRepository.findById(categoryId);
-				articleRepository.updateShopArticle(description, brand, price, categoryId);
-			
-		} catch (Exception e) {
-			System.out.println("Cette categorie n'existe pas !");
-		}
-
-		// supprimer article
-		articleRepository.updateArticle(targetId, description);
-		showArticles();
-	}
-
-	public void orderAsc() {
-		articleRepository.findAllByOrderByIdAsc();
-		showArticles();
-	}
-
-	public void orderDesc() {
-		articleRepository.findAllByOrderByIdDesc();
-		showArticles();
-	}
-
-	public void showArticles() {
-		for (Article article : articleRepository.findAll()) {
-		System.out.println(article);}
-
-	}
-
-
-	public void addArticle(String brand, String description, double price, int categoryId) {
-
-		// ajouter ici l'appel
-
-	}
-
+	@Override
 	public void deleteArticle(int targetId) {
-
-		// supprimer article
 		articleRepository.deleteById(targetId);
-		showArticles();
 	}
 
-	// ?????????????????????????????
-	public void show5ArticlesByPage() {
-		// ajouter ici l'appel
-	}
 
-	public void show5CategoryByPage() {
-		articleRepository.findTop5ByOrderByIdDesc();
+	/*
+	 * =============================================================================
+	 * Category
+	 * =============================================================================
+	 */
+	
+	@Override
+	public List<Category> showCategory() {
+		return  categoryRepository.findAll();
 	}
 	
+	@Override
+	public List<Category> categoryOrderAsc() {
+		return categoryRepository.findAllByOrderByIdAsc();
+		//showArticles();
+	}
+
+	@Override
+	public List<Category> categoryOrderDesc() {
+		return categoryRepository.findAllByOrderByIdDesc();
+		//showArticles();
+	}
+	
+	@Override
 	public void addCategory(String name) {
-		// ajouter ici l'appel
-
+																										// a changer
 	}
 
+	@Override
 	public void updateCategory(int targetId, String name) {
-		// ajouter ici l'appel
-		showCategory();
+																										// a changer
 	}
 
+	@Override
 	public void deleteCategory(int targetId) {
-		// ajouter ici l'appel
-		showCategory();
+																										// a changer
 	}
-
-
-	public void showCategory() {
-		for (Category category : categoryRepository.findAll()) {
-		System.out.println(category);}
-	}
-
-
-/*
-	@Override
-	public Article save(String name, String brand, double price) {
-		return articleRepository.save(new Article(name, brand, price));
-		
-	}
-
-	@Override
-	public List<Article> addArticles() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	*/
 	
 }
