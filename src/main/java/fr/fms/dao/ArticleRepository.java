@@ -20,7 +20,7 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 	public List<Article> findTop5ByOrderByIdDesc(); // affiche 5
 
 	//public List<Article> findById(int id);
-	public Article findById(int id);
+	public List<Article> findById(int id);
 
 	public List<Article> findByBrand(String brand); // recherche dans colonne brand où le nom est #
 
@@ -31,6 +31,8 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 	public List<Article> findByBrandAndDescription(String brand, String info);
 
 	public List<Article> deleteById(int id);
+	
+	
 
 	@Query("select A from Article A where A.brand like %:x% and A.price > :y")
 	public List<Article> searchArticles(@Param("x") String kw, @Param("y") double price);
@@ -39,11 +41,11 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 	public List<Article> searchArticle(@Param("x") int id);
 
 	@Modifying
-	@Query("update Article A set A.desription = :d where A.id == :i")
+	@Query("update Article A set A.description = :d where A.id like :i")
 	public void updateArticle(@Param("i") int id, @Param("d") String description);
 
 	@Modifying
-	@Query("update Article A set A.desription = :d, A.brand = :d, A.price = :p, A.category = :c")
+	@Query("update Article A set A.description = :d, A.brand = :b, A.price = :p, A.category = :c")
 	public void updateShopArticle(@Param("d") String description, @Param("b") String brand,
 			@Param("p") double price, @Param("c") Category category);
 			
