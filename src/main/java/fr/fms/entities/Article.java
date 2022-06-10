@@ -1,8 +1,6 @@
 package fr.fms.entities;
 
 import java.io.Serializable;
-import java.util.List;
-import java.util.Scanner;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,34 +8,21 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import fr.fms.dao.ArticleRepository;
-import fr.fms.dao.CategoryRepository;
-
 @Entity
 public class Article implements Serializable {
-	private static final long serialVersionId = 1L;
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private int id;
 	private String description;
 	private String brand;
 	private double price;
 
-	@Autowired
-	private static ArticleRepository articleRepository;
-
-	@Autowired
-	private static CategoryRepository categoryRepository;
-
 	@ManyToOne
 	private Category category;
 
-	@Override
-	public String toString() {
-		return "Article [id=" + id + ", description=" + description + ", brand=" + brand + ", price=" + price
-				+ ", category=" + category + "]";
+	public Article(int id) {
+		this.id = id;
 	}
 
 	public Article(String description, String brand, double price) {
@@ -53,16 +38,24 @@ public class Article implements Serializable {
 		this.category = category;
 	}
 
+	public Article(int id, String description, String brand, double price, Category category) {
+		this.id = id;
+		this.description = description;
+		this.brand = brand;
+		this.price = price;
+		this.category = category;
+	}
+
 	public Article() {
 	}
 
 	// ----------------------------- getter + setter -----------------------------
 
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -88,5 +81,20 @@ public class Article implements Serializable {
 
 	public void setPrice(double price) {
 		this.price = price;
+	}
+
+	@Override
+	public String toString() {
+		return "Article [id=" + id + ", description=" + description + ", brand=" + brand + ", price=" + price
+				+ ", category=" + category + "]";
+	}
+
+	public static String centerString(String str) {
+		if (str.length() >= 20)
+			return str;
+		String dest = "                    ";
+		int deb = (20 - str.length()) / 2;
+		String data = new StringBuilder(dest).replace(deb, deb + str.length(), str).toString();
+		return data;
 	}
 }

@@ -1,6 +1,5 @@
 package fr.fms;
 
-import java.util.List;
 import java.util.Scanner;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +15,10 @@ import fr.fms.entities.Category;
 
 @SpringBootApplication
 public class SpringMain implements CommandLineRunner {
-	
+
 	@Autowired
 	private IBusinessImpl business;
-	
+
 	@Autowired
 	private ArticleRepository articleRepository;
 
@@ -29,37 +28,16 @@ public class SpringMain implements CommandLineRunner {
 	public static void main(String[] args) {
 		SpringApplication.run(SpringMain.class, args);
 	}
-	
+
 	@Override
 	public void run(String... args) throws Exception {
-		
-		Category smartphone = categoryRepository.save(new Category("Smartphone"));
-		Category tablet = categoryRepository.save(new Category("Tablet"));
-		Category pc = categoryRepository.save(new Category("PC"));
 
-		articleRepository.save(new Article("S10", "Samsung", 500, smartphone));
-		articleRepository.save(new Article("S9", "Samsung", 350, smartphone));
-		articleRepository.save(new Article("MI10", "Xiaomi", 100, smartphone));
-
-		articleRepository.save(new Article("A22", "Samsung", 360, smartphone));
-		articleRepository.save(new Article("Y62", "Wiko", 130, smartphone));
-		articleRepository.save(new Article("Redmi", "Xiaomi", 220, smartphone));
-
-		articleRepository.save(new Article("GalaxyTab", "Samsung", 450, tablet));
-		articleRepository.save(new Article("Ipad", "Apple", 350, tablet));
-		articleRepository.save(new Article("P11", "Lenovo", 280, tablet));
-		articleRepository.save(new Article("M10", "Lenovo", 300, tablet));
-
-		articleRepository.save(new Article("R510", "Asus", 600, pc));
-		articleRepository.save(new Article("Cn-510", "HP", 600, pc));
-		
 		/*
 		 * =============================================================================
-		 * Menu Principale 
+		 * Menu Principale
 		 * =============================================================================
 		 */
-	
-	
+
 		System.out.println(
 				"\n-------------------------------------------------------------------------------------------------"
 						+ "\n-------------------------------------------------- Menu -----------------------------------------"
@@ -67,34 +45,35 @@ public class SpringMain implements CommandLineRunner {
 		Scanner scan = new Scanner(System.in);
 		int menuChoice = 0;
 		boolean mainMenu = true;
-		while (mainMenu ==true) {
-		System.out.println("\n * Choisissez votre exercice *");
-		System.out.println(" 1/ Construction de la BDD\n  2/ exercice de base\n 3/ TP du Shop\n 0/ Sortir");
-		while (!scan.hasNextInt())
-			scan.next();
-		menuChoice = scan.nextInt();
-		switch (menuChoice) {
-		case 1:
-			// buildBdd();
-			break;
-		case 2:
-			exerciseMenu();
-			mainMenu = false;
-			break;
-		case 3:
-			tpShopMenu();
-			mainMenu = false;
-			break;
-		default:
-			System.out.println("\nMauvaise saisie.");
+		while (mainMenu == true) {
+			System.out.println("\n * Choisissez votre exercice *");
+			System.out.println(" 1/ Construction de la BDD\n  2/ exercice de base\n 3/ TP du Shop\n 0/ Sortir");
+			while (!scan.hasNextInt())
+				scan.next();
+			menuChoice = scan.nextInt();
+			switch (menuChoice) {
+			case 1:
+				buildBdd();
+				break;
+			case 2:
+				exerciseMenu();
+				mainMenu = false;
+				break;
+			case 3:
+				tpShopMenu();
+				mainMenu = false;
+				break;
+			default:
+				System.out.println("\nMauvaise saisie.");
+			}
+
 		}
-		
-		}
+		scan.close();
 	}
 
 	/*
 	 * =============================================================================
-	 * Menu Exercice 
+	 * Menu Exercice
 	 * =============================================================================
 	 */
 	public void exerciseMenu() {
@@ -145,6 +124,7 @@ public class SpringMain implements CommandLineRunner {
 				System.out.println("\nMauvaise saisie.");
 			}
 		}
+		scan.close();
 	}
 
 	/*
@@ -211,7 +191,6 @@ public class SpringMain implements CommandLineRunner {
 	 */
 
 	private void showOneArticleWithMethode() {
-		int id;
 		Scanner scanId = new Scanner(System.in);
 		int targetId = 0;
 		System.out.println("\nSaisissezl'Id : ");
@@ -221,22 +200,23 @@ public class SpringMain implements CommandLineRunner {
 		//
 		int menuChoice = 0;
 
-			while (!scanId.hasNextInt())
-				scanId.next();
-			menuChoice = scanId.nextInt();
-			switch (menuChoice) {
-			case 1:
-				business.showArticleWithMethode(targetId);
-				break;
-			case 2:
-				business.showArticleWithQuery(targetId);
-				break;
-			case 3:
-				business.showArticleWithStream(targetId);
-				break;
-			}
+		while (!scanId.hasNextInt())
+			scanId.next();
+		menuChoice = scanId.nextInt();
+		switch (menuChoice) {
+		case 1:
+			business.showArticleWithMethode(targetId);
+			break;
+		case 2:
+			business.showArticleWithQuery(targetId);
+			break;
+		case 3:
+			business.showArticleWithStream(targetId);
+			break;
+		}
+		scanId.close();
 	}
-	
+
 	private void showArticleWithDAndM() {
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("\nSaisissez la description : ");
@@ -248,7 +228,6 @@ public class SpringMain implements CommandLineRunner {
 		business.showArticleWithDAndM(brand, description);
 	}
 
-	
 	private void updateArticle() {
 		Scanner scanId = new Scanner(System.in);
 		int targetId = 0;
@@ -267,12 +246,14 @@ public class SpringMain implements CommandLineRunner {
 		while (!scanId.hasNextInt())
 			scanId.next();
 		int categoryId = scanId.nextInt();
-		
+
 		//
 		//
 		business.updateArticle(targetId, brand, description, price, categoryId);
+		scanId.close();
+		scanner.close();
 	}
-	
+
 	private void addArticle() {
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("\nSaisissez la marque : ");
@@ -294,8 +275,9 @@ public class SpringMain implements CommandLineRunner {
 		//
 		// ajouter ici l'appel
 		business.addArticle(brand, description, price, categoryId);
+		scanCat.close();
 	}
-	
+
 	private void deleteArticle() {
 		Scanner scanId = new Scanner(System.in);
 		int targetId = 0;
@@ -305,16 +287,15 @@ public class SpringMain implements CommandLineRunner {
 		targetId = scanId.nextInt();
 		// supprimer article
 		business.deleteArticle(targetId);
+		scanId.close();
 	}
-	
-	
-	
+
 	/*
 	 * =============================================================================
 	 * Sous-menu Category
 	 * =============================================================================
 	 */
-	
+
 	private void addCategory() {
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("\nSaisissez son nom : ");
@@ -342,7 +323,7 @@ public class SpringMain implements CommandLineRunner {
 		// ajouter ici l'appel
 		business.updateCategory(targetId, name);
 	}
-	
+
 	private void deleteCategory() {
 		Scanner scanId = new Scanner(System.in);
 		int targetId = 0;
@@ -353,36 +334,35 @@ public class SpringMain implements CommandLineRunner {
 		//
 		// ajouter ici l'appel
 		business.deleteCategory(targetId);
+		scanId.close();
 	}
-	
+
 	/*
 	 * =============================================================================
 	 * Constrruction de la BDD
 	 * =============================================================================
 	 */
-	
-	private void buildBdd(){
-	Category smartphone = categoryRepository.save(new Category("Smartphone"));
-	Category tablet = categoryRepository.save(new Category("Tablet"));
-	Category pc = categoryRepository.save(new Category("PC"));
 
-	articleRepository.save(new Article("S10", "Samsung", 500, smartphone));
-	articleRepository.save(new Article("S9", "Samsung", 350, smartphone));
-	articleRepository.save(new Article("MI10", "Xiaomi", 100, smartphone));
+	private void buildBdd() {
+		Category smartphone = categoryRepository.save(new Category("Smartphone"));
+		Category tablet = categoryRepository.save(new Category("Tablet"));
+		Category pc = categoryRepository.save(new Category("PC"));
 
-	articleRepository.save(new Article("A22", "Samsung", 360, smartphone));
-	articleRepository.save(new Article("Y62", "Wiko", 130, smartphone));
-	articleRepository.save(new Article("Redmi", "Xiaomi", 220, smartphone));
+		articleRepository.save(new Article("S10", "Samsung", 500, smartphone));
+		articleRepository.save(new Article("S9", "Samsung", 350, smartphone));
+		articleRepository.save(new Article("MI10", "Xiaomi", 100, smartphone));
 
-	articleRepository.save(new Article("GalaxyTab", "Samsung", 450, tablet));
-	articleRepository.save(new Article("Ipad", "Apple", 350, tablet));
-	articleRepository.save(new Article("P11", "Lenovo", 280, tablet));
-	articleRepository.save(new Article("M10", "Lenovo", 300, tablet));
+		articleRepository.save(new Article("A22", "Samsung", 360, smartphone));
+		articleRepository.save(new Article("Y62", "Wiko", 130, smartphone));
+		articleRepository.save(new Article("Redmi", "Xiaomi", 220, smartphone));
 
-	articleRepository.save(new Article("R510", "Asus", 600, pc));
-	articleRepository.save(new Article("Cn-510", "HP", 600, pc));
+		articleRepository.save(new Article("GalaxyTab", "Samsung", 450, tablet));
+		articleRepository.save(new Article("Ipad", "Apple", 350, tablet));
+		articleRepository.save(new Article("P11", "Lenovo", 280, tablet));
+		articleRepository.save(new Article("M10", "Lenovo", 300, tablet));
+
+		articleRepository.save(new Article("R510", "Asus", 600, pc));
+		articleRepository.save(new Article("Cn-510", "HP", 600, pc));
 	}
-	
-
 
 }

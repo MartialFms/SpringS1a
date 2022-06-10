@@ -1,7 +1,6 @@
 package fr.fms.entities;
 
 import java.util.Collection;
-import java.util.Scanner;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,19 +8,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import fr.fms.dao.CategoryRepository;
-
 @Entity
 public class Category {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private int id;
 	private String name;
-
-	@Autowired
-	private static CategoryRepository categoryRepository;
 
 	@OneToMany(mappedBy = "category")
 	private Collection<Article> articles;
@@ -30,21 +22,25 @@ public class Category {
 		this.name = name;
 	}
 
-	public Category() {
+	public Category(int id, String name) {
+		this.id = id;
+		this.name = name;
 	}
 
-	@Override
-	public String toString() {
-		return "Category [id=" + id + ", name=" + name + ", articles=" + articles + "]";
+	/*
+	 * public Category(Long id, String name, Collection<Article> articles) {
+	 * super(); this.id = id; this.name = name; this.articles = articles; }
+	 */
+	public Category() {
 	}
 
 // ----------------------------- getter + setter -----------------------------
 
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -54,6 +50,11 @@ public class Category {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@Override
+	public String toString() {
+		return "Category [id=" + id + ", name=" + name + "]";
 	}
 
 }
