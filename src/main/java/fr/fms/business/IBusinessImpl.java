@@ -3,6 +3,9 @@ package fr.fms.business;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import fr.fms.dao.ArticleRepository;
@@ -31,7 +34,7 @@ public class IBusinessImpl implements IBusiness {
 	}
 
 	@Override
-	public List<Article> show5ArticlesByPage() {
+	public Page<Category> show5ArticlesByPage(int page, int pageSize) {
 		return null; // a changer
 	}
 
@@ -90,8 +93,9 @@ public class IBusinessImpl implements IBusiness {
 	}
 
 	@Override
-	public List<Article> show5CategoriesByPage() {
-		return null; // a changer
+	public Page<Category> show5CategoriesByPage(int page, int pageSize) {
+		Pageable pageable = PageRequest.of(page, pageSize);
+		return categoryRepository.findAll(pageable);
 	}
 
 	@Override

@@ -3,21 +3,19 @@ package fr.fms.dao;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
 import fr.fms.entities.Article;
 import fr.fms.entities.Category;
 
 //public interface ArticleRepository extends JpaRepository<Article, Long>
-public interface ArticleRepository extends JpaRepository<Article, Integer> {
-	// page
-	int page = 0;
-	Pageable pageable = PageRequest.of(page, 5);
+public interface ArticleRepository extends JpaRepository<Article, Integer>, PagingAndSortingRepository<Article, Integer> {
+	
 	public Page<Article> findAll(Pageable pageable);
 	//
 	

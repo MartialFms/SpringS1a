@@ -1,7 +1,32 @@
 package fr.fms;
 
+import java.util.List;
+
+import fr.fms.entities.Article;
+
 public class test {
 
+	private static void articleTable() {
+		char f1 = '\u2318';	// 2 lignes verticales
+		System.out.println(
+				f1+ "\u001b[30m\u001b[47m +                                 ARTICLES                                                             +\u001b[m ");
+		System.out.println(
+				"\u001b[30m\u001b[47m+                                 ARTICLES                                                             +");
+		System.out.println(
+				"+----+-----------------+-----------+---------+---------------------+");
+		System.out.printf("| %-3s| %-16s | %-10s | %-8s | %-20s |%n", "ID", "   Article",
+				"  Marque", "  Prix", "  Categorie");
+		System.out.println(
+				"+----+-----------------+-----------+---------+---------------------+");
+		
+			System.out.printf("| %-3s| %-16s | %-10s | %8s | %-20s |%n", 1, "truc",
+					"machin", "10 €", "Smartphone");
+		
+		System.out.println(
+				"+------+--------------------------------+--------------------------------+----------------------+-----------------+");
+
+	}
+	
 	   static void allKindOfTests() {
 	        String Prefix = "===\u001b[1;3;4;9;38;5;153;48;5;222mMix";
 
@@ -146,6 +171,7 @@ public class test {
 	        // allTestScrolling();
 	        // allKindOfTests();
 	        allTest256();
+	        articleTable();
 	        // testCursorMovementConsumed();
 	    }
 	

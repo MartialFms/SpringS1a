@@ -1,5 +1,6 @@
 package fr.fms;
 
+import java.util.List;
 import java.util.Scanner;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,15 +40,13 @@ public class SpringMain implements CommandLineRunner {
 		 */
 
 		System.out.println(
-				"\n-------------------------------------------------------------------------------------------------"
-						+ "\n-------------------------------------------------- Menu -----------------------------------------"
-						+ "\n-------------------------------------------------------------------------------------------------");
+				"\n\u001b[30m\u001b[47m____________Menu_______________");
 		Scanner scan = new Scanner(System.in);
 		int menuChoice = 0;
 		boolean mainMenu = true;
 		while (mainMenu == true) {
-			System.out.println("\n * Choisissez votre exercice *");
-			System.out.println(" 1/ Construction de la BDD\n  2/ exercice de base\n 3/ TP du Shop\n 0/ Sortir");
+			System.out.println(" * Choisissez votre exercice * ");
+			System.out.println("\u001b[m| 1/ Construction de la BDD   |\n| 2/ exercice de base         |\n| 3/ TP du Shop               |\n|___________________0/ Sortir_|");
 			while (!scan.hasNextInt())
 				scan.next();
 			menuChoice = scan.nextInt();
@@ -107,15 +106,15 @@ public class SpringMain implements CommandLineRunner {
 				updateArticle();
 				break;
 			case 5:
-				business.categoryOrderAsc();
+				categoryOrderAsc();
 				break;
 			case 6:
-				business.categoryOrderDesc();
+				categoryOrderDesc();
 				break;
 			case 7:
-				business.showArticles();
+				showArticles();
 			case 8:
-				business.showCategory();
+				showCategory();
 				break;
 			case 0:
 				menu = false;
@@ -150,11 +149,11 @@ public class SpringMain implements CommandLineRunner {
 		menuChoice = scan.nextInt();
 		switch (menuChoice) {
 		case 1:
-			business.showArticles();
-			business.showCategory();
+			showArticles();
+			showCategory();
 			break;
 		case 2:
-			business.show5ArticlesByPage();
+			show5ArticlesByPage();
 			break;
 		case 3:
 			addArticle();
@@ -166,7 +165,7 @@ public class SpringMain implements CommandLineRunner {
 			deleteArticle();
 			break;
 		case 6:
-			business.show5CategoriesByPage();
+			show5CategoriesByPage();
 			break;
 		case 7:
 			addCategory();
@@ -186,9 +185,66 @@ public class SpringMain implements CommandLineRunner {
 
 	/*
 	 * =============================================================================
+	 * Mise en forme
+	 * =============================================================================
+	 */
+	
+	private String idFormatter( int id ) {
+		String strDoubleFormat = String.format("%.2f", id);					//System.out.printf("%.2f", val);
+		return strDoubleFormat;
+    }
+	
+	private String priceFormatter( double price ) {
+		String strDoubleFormat = String.format("%.2f", price);
+		return strDoubleFormat;
+    }
+
+	private void readArticleTable(List<Article> articles) {
+		System.out.println("\u001b[30m\u001b[47m__________________________________ARTICLES__________________________");
+		System.out.printf("| %-3s| %-16s | %-10s | %-8s | %-16s |%n", "ID", "   Article",
+				"  Marque", "  Prix", "  Categorie");
+		for (Article article : articles) {
+			System.out.printf("\u001b[m| %-3s| %-16s | %-10s | %8s | %-16s |%n", article.getId(), article.getDescription(),
+					article.getBrand(), priceFormatter(article.getPrice()) + " €", article.getCategory().getName());
+		}
+		System.out.println(
+				"|____|__________________|____________|__________|__________________|");
+
+	}
+
+	private void readCategoryTable(List<Category> categories) {
+		System.out.println("\u001b[30m\u001b[47m________CATEGORIES________");
+		System.out.printf("  %-3s | %-16s  %n", "ID", "    Name");
+		for (Category category : categories) {
+			System.out.printf("\u001b[m| %-3s | %-16s |%n", category.getId(), category.getName());
+		}
+		System.out.println("|_____|__________________|");
+
+	}
+
+	/*
+	 * =============================================================================
 	 * Sous-menu Article
 	 * =============================================================================
 	 */
+
+	private void categoryOrderAsc() {
+		business.categoryOrderAsc();
+	}
+
+	private void categoryOrderDesc() {
+		business.categoryOrderDesc();
+	}
+
+	private void showArticles() {
+		List<Article> articles = business.showArticles();
+		readArticleTable(articles);
+	}
+
+	private void showCategory() {
+		List<Category> categories = business.categoryOrderDesc();
+		readCategoryTable(categories);
+	}
 
 	private void showOneArticleWithMethode() {
 		Scanner scanId = new Scanner(System.in);
@@ -290,6 +346,16 @@ public class SpringMain implements CommandLineRunner {
 		scanId.close();
 	}
 
+	private void show5ArticlesByPage() {
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("\nPagination fixée à 5 articles/pages ");
+		int pageSize = 5;
+		System.out.println("\nSaisissez la page : ");
+		int page = scanner.nextInt();
+		scanner.close();
+		business.show5ArticlesByPage(page, pageSize); // a faire
+	}
+
 	/*
 	 * =============================================================================
 	 * Sous-menu Category
@@ -337,6 +403,16 @@ public class SpringMain implements CommandLineRunner {
 		scanId.close();
 	}
 
+	private void show5CategoriesByPage() {
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("\nPagination fixée à 5 catégories/pages ");
+		int pageSize = 5;
+		System.out.println("\nSaisissez la page : ");
+		int page = scanner.nextInt();
+		scanner.close();
+		business.show5CategoriesByPage(page, pageSize); // a faire
+	}
+
 	/*
 	 * =============================================================================
 	 * Constrruction de la BDD
@@ -346,7 +422,11 @@ public class SpringMain implements CommandLineRunner {
 	private void buildBdd() {
 		Category smartphone = categoryRepository.save(new Category("Smartphone"));
 		Category tablet = categoryRepository.save(new Category("Tablet"));
-		Category pc = categoryRepository.save(new Category("PC"));
+		Category pc = categoryRepository.save(new Category("PC bureau"));
+		Category laptop = categoryRepository.save(new Category("Pc portable"));
+		Category device = categoryRepository.save(new Category("App connectés"));
+		Category stockage = categoryRepository.save(new Category("Stockage externe"));
+		Category accessory = categoryRepository.save(new Category("Accessoire"));
 
 		articleRepository.save(new Article("S10", "Samsung", 500, smartphone));
 		articleRepository.save(new Article("S9", "Samsung", 350, smartphone));
@@ -361,8 +441,19 @@ public class SpringMain implements CommandLineRunner {
 		articleRepository.save(new Article("P11", "Lenovo", 280, tablet));
 		articleRepository.save(new Article("M10", "Lenovo", 300, tablet));
 
-		articleRepository.save(new Article("R510", "Asus", 600, pc));
-		articleRepository.save(new Article("Cn-510", "HP", 600, pc));
+		articleRepository.save(new Article("R510", "Asus", 600, laptop));
+		articleRepository.save(new Article("Cn-510", "HP", 890, laptop));
+		articleRepository.save(new Article("Pavillon7", "HP", 900, laptop));
+
+		articleRepository.save(new Article("M72E", "Lenovo", 450, pc));
+		articleRepository.save(new Article("Pavillon TP01", "HP", 580, pc));
+
+		articleRepository.save(new Article("Smartwatch", "HP", 160, device));
+
+		articleRepository.save(new Article("M710", "Lenovo", 460, stockage));
+
+		articleRepository.save(new Article("Screen C24", "Samsung", 180, accessory));
+
 	}
 
 }
